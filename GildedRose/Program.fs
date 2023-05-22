@@ -13,33 +13,41 @@ module NewItemModule =
         | Sulfuras
         | Backstage
         | Conjured
-        | Normal
+        | Dexterity
+        | Elixir
 
     type newItem = 
         {
-            Name: string
             SellIn: int
             Quality: int
             Category: Category
         }
+        // No ponemos name dentro porque si no hay una redundancia
 
     let Item_to_newItem (item: Item) : newItem =
-        let newitem = {
-            Name = item.Name
+        {
             SellIn = item.SellIn
             Quality = item.Quality
             Category = match item.Name with
-                        | "Aged Brie" -> Category:Aged_Brie
+                        | "Aged Brie" -> Aged_brie
                         | "Backstage passes to a TAFKAL80ETC concert" -> Backstage
                         | "Sulfuras, Hand of Ragnaros" -> Sulfuras
                         | "Conjured Mana Cake" -> Conjured
-                        |_  -> Normal
+                        | "+5 Dexterity Vest" -> Dexterity
+                        | "Elixir of the Mongoose" -> Elixir
+                        |_  -> raise 
         }
-        newitem
 
     let newItem_to_Item (item: newItem) : Item =
         {
-            Name = item.Name
+            Name = match newItem.Category with
+                    | Aged_brie -> "Aged Brie"
+                    | Backstage -> "Backstage passes to a TAFKAL80ETC concert"
+                    | Sulfuras -> "Sulfuras, Hand of Ragnaros"
+                    | Conjured -> "Conjured Mana Cake"
+                    | Dexterity -> "+5 Dexterity Vest"
+                    | Elixir -> "Elixir of the Mongoose"
+                    |_  -> raise 
             SellIn = item.SellIn
             Quality = item.Quality
         }
