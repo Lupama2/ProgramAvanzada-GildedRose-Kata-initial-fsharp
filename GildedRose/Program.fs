@@ -2,12 +2,54 @@
 
 open System.Collections.Generic
 
+
 type Item = { Name: string; SellIn: int; Quality: int }
+
+
+module NewItemModule = 
+
+    type Category =
+        | Aged_brie
+        | Sulfuras
+        | Backstage
+        | Conjured
+        | Normal
+
+    type newItem = 
+        {
+            Name: string
+            SellIn: int
+            Quality: int
+            Category: Category
+        }
+
+    let Item_to_newItem (item: Item) : newItem =
+        let newitem = {
+            Name = item.Name
+            SellIn = item.SellIn
+            Quality = item.Quality
+            Category = match item.Name with
+                        | "Aged Brie" -> Category:Aged_Brie
+                        | "Backstage passes to a TAFKAL80ETC concert" -> Backstage
+                        | "Sulfuras, Hand of Ragnaros" -> Sulfuras
+                        | "Conjured Mana Cake" -> Conjured
+                        |_  -> Normal
+        }
+        newitem
+
+    let newItem_to_Item (item: newItem) : Item =
+        {
+            Name = item.Name
+            SellIn = item.SellIn
+            Quality = item.Quality
+        }
+
 
 type GildedRose(items:IList<Item>) =
     let Items = items
 
     member this.UpdateQuality() =
+    // Modified
         for i = 0 to Items.Count - 1 do
             if Items.[i].Name <> "Aged Brie" && Items.[i].Name <> "Backstage passes to a TAFKAL80ETC concert" then
                 if Items.[i].Quality > 0 then
